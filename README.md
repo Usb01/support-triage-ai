@@ -52,3 +52,11 @@ API reference: https://developers.openai.com/api/docs/guides/structured-outputs
 ## Contact
 
 [Usman on Upwork](https://www.upwork.com/freelancers/~017ac7683856df4451) · [GitHub](https://github.com/Usb01)
+
+## Interactive FAQ chat demo
+
+Run `python chatbot.py`, then open http://127.0.0.1:8765. This local browser interface answers sample billing, account-access and refund questions from three fictional policies. It displays the matched source and support category. Unknown or tied matches request human review; refund requests always require review.
+
+This is deterministic keyword retrieval, not a generative chatbot or vector RAG system. It makes no external calls and keeps no conversation history. Use synthetic questions only. The optional OpenAI adapter belongs to the separate ticket-triage workflow described above. The local HTTP server is for a single-user demonstration, not internet deployment.
+
+Six additional tests cover source selection, ambiguous questions, unknown queries, refund review, instruction-like input and invalid questions. Run all 16 project tests with `python -m unittest discover -v`.
