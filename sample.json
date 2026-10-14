@@ -1,0 +1,18 @@
+[
+  {
+    "id": "T-101",
+    "text": "Please send a copy of the invoice for last month."
+  },
+  {
+    "id": "T-102",
+    "text": "There is an outage and our app keeps showing an error."
+  },
+  {
+    "id": "T-103",
+    "text": "I need help resetting my account password."
+  },
+  {
+    "id": "T-104",
+    "text": "Do you provide onboarding documentation?"
+  }
+]

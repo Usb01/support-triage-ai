@@ -1,0 +1,1 @@
+Portfolio demo with synthetic data. Preserve demo and live-mode distinctions. Never commit credentials, customer data, or run logs. Run python -m unittest discover -v after changes. Do not add automatic messages or real business actions.
