@@ -1,62 +1,74 @@
 # Support Triage AI
 
-AI integration adapter with schema validation and human review; offline demo included.
+Sorts incoming support tickets by category, priority and team, sets an SLA deadline, and drafts a reply for an agent to approve. It runs on keyword rules out of the box, and on OpenAI or Claude structured outputs when a key is set.
 
-![Project overview](cover.png)
+![Review queue](docs/review-queue.png)
 
-**Portfolio demonstration by Usman Saleem Bhatti.** Newly built with AI assistance and synthetic sample data; not represented as past client work.
+## What it does
 
-## Workflow
-
-`Ticket JSON → provider adapter → validated classification → human review → report`
-
-## Features
-
-Offline rules mode, optional OpenAI Responses API integration, structured JSON output, schema checks, refusal handling, duplicate-ticket detection.
-
-## Quick start
-
-Python 3.11 or newer. No third-party dependencies.
-
-```sh
-python app.py --demo --output runs
-python -m unittest discover -v
+```
+email (.eml) ─┐
+CSV / JSON   ─┼─► Ticket ─► classifier ─────────► team + SLA deadline ─► SQLite ─► review queue (Streamlit)
+Zendesk hook ─┤             rules | OpenAI | Claude                                  edit draft → approve
+POST /tickets ┘             (falls back to rules on any LLM error)
 ```
 
-Open `runs/report.html` in a browser. `runs/result.json` contains structured output. Demo reruns reuse their local ledger where applicable; use a fresh output folder to repeat the first-run scenario.
+- **Classification:** category (billing, technical, account, security, shipping, feature request, general), priority, sentiment, language (English and Arabic) and a one-line summary.
+- **Routing and SLA:** each category maps to a team. First-response deadlines are counted in business hours (Sun–Thu 08:00–17:00 Riyadh): urgent 1h on the clock, high 4h, normal 8h, low 24h.
+- **Draft replies** that never promise refunds, dates or account changes. Agents edit and approve every draft in the queue; nothing is sent automatically.
+- **Flagged for review** when confidence is low, the ticket is urgent, the customer is upset, or the LLM failed and rules were used.
+- **Structured LLM output:** OpenAI uses the Responses API with a strict JSON schema; Claude uses a forced tool call with the same schema. Both are validated with Pydantic. A refusal, incomplete response, invalid category or HTTP error all fall back to the rules classifier instead of crashing the batch.
+- **Intake:** CSV, JSON and `.eml` files (quoted replies are stripped), a generic `POST /tickets` webhook and a Zendesk webhook, all with optional token auth. Re-importing the same ticket is a no-op.
 
-## Custom input
+## Run it
 
-```sh
-python app.py --input sample.json --output runs
+```bash
+pip install -r requirements.txt
+
+# classify the 30 sample tickets (dates shifted so SLA timers look live)
+python -m triage import data/sample_tickets.csv data/reply_example.eml --demo-dates
+
+streamlit run app.py                  # review queue at http://localhost:8501
+uvicorn triage.webhook:app --port 8001   # optional: real-time intake
 ```
 
-## What is tested
+To use an LLM instead of rules:
 
-The unit tests cover the business rules, malformed inputs and important failure paths. The generated `demo-report.html` is a checked-in sample report for quick inspection. Runtime output and databases are ignored by Git.
+```bash
+export TRIAGE_ENGINE=openai OPENAI_API_KEY=sk-...        # or
+export TRIAGE_ENGINE=anthropic ANTHROPIC_API_KEY=...
+```
 
-## Daily checks
+## Tests
 
-The included `checks.yml` is a GitHub Actions workflow template. To activate it, place it at `.github/workflows/checks.yml`. It runs tests and the demo daily and on pushes, retaining run logs and a report artifact. The local portfolio bundle also includes `run_daily_checks.py` for background checks.
+`pytest -q` runs 34 tests covering:
 
-## Scope and limitations
+- the keyword rules, including Arabic and word-suffix edge cases (`accountant` ≠ `account`)
+- business-hours SLA maths across evenings and weekends
+- OpenAI and Anthropic response parsing, using mocked HTTP
+- fallback on refusals, schema violations and 429s
+- `.eml` and Zendesk parsing, store idempotency and webhook auth
 
-Offline mode uses rules, not AI. Live mode is implemented but not live-tested without credentials. Every draft remains for human review; no messages are sent.
+## Layout
 
-## Optional live AI mode
+```
+triage/
+  models.py     Ticket + Triage schemas (shared by rules and LLM)
+  rules.py      keyword classifier and reply templates
+  llm.py        OpenAI Responses / Anthropic tool-use adapters
+  pipeline.py   engine selection, fallback, team routing, SLA
+  sources.py    CSV / JSON / .eml / Zendesk → Ticket
+  store.py      SQLite persistence and review updates
+  webhook.py    FastAPI intake
+app.py          Streamlit review queue
+data/           fictional sample tickets
+```
 
-Set `OPENAI_API_KEY` and `OPENAI_MODEL` in your environment, then run `python app.py --live --input sample.json --output runs`. This explicitly sends ticket text to OpenAI and may incur API charges. `.env.example` is a reference, not an automatically loaded secrets file. Keep credentials server-side. No live request was made during demo validation.
+## Notes
 
-API reference: https://developers.openai.com/api/docs/guides/structured-outputs
+- The keyword rules are a baseline, not a model. They're tuned on the sample tickets and will miss phrasings they haven't seen. That's why low-confidence results are flagged for review and the LLM engine exists.
+- For a live helpdesk, the next step would be posting approved replies back through the Zendesk or Freshdesk API, and using agent corrections as evaluation data.
 
-## Contact
+---
 
-[Usman on Upwork](https://www.upwork.com/freelancers/~017ac7683856df4451) · [GitHub](https://github.com/Usb01)
-
-## Interactive FAQ chat demo
-
-Run `python chatbot.py`, then open http://127.0.0.1:8765. This local browser interface answers sample billing, account-access and refund questions from three fictional policies. It displays the matched source and support category. Unknown or tied matches request human review; refund requests always require review.
-
-This is deterministic keyword retrieval, not a generative chatbot or vector RAG system. It makes no external calls and keeps no conversation history. Use synthetic questions only. The optional OpenAI adapter belongs to the separate ticket-triage workflow described above. The local HTTP server is for a single-user demonstration, not internet deployment.
-
-Six additional tests cover source selection, ambiguous questions, unknown queries, refund review, instruction-like input and invalid questions. Run all 16 project tests with `python -m unittest discover -v`.
+Built by [Usman Saleem Bhatti](https://www.upwork.com/freelancers/~017ac7683856df4451). All tickets and customers in `data/` are made up.

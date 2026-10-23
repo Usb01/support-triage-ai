@@ -1,0 +1,31 @@
+id,subject,body,customer,email,channel,created_at
+T-1001,Charged twice this month,"Hi, I was charged twice for the March subscription. Please refund the duplicate payment, this is the second time this has happened.",Emily Clark,emily.clark@example.com,web_form,2026-10-17T23:28:00
+T-1002,Invoice copy,Could you send me a copy of the invoice for February? Our accountant needs it with the VAT number.,Maria Lopez,maria.lopez@example.com,email,2026-10-19T09:09:00
+T-1003,API returning 500,Since this morning every call to the orders API returns a 500 error. Our integration is broken and orders are not syncing.,Hassan Raza,hassan.raza@example.com,web_form,2026-10-17T00:21:00
+T-1004,Dashboard is down for everyone,"The whole dashboard is down for everyone in our company. We cannot access anything. This is urgent, we are in production.",Faisal Qureshi,faisal.qureshi@example.com,email,2026-10-19T20:32:00
+T-1005,Can't log in,I reset my password but still can't log in. It says the account is locked.,Omar Saleh,omar.saleh@example.com,email,2026-10-19T21:26:00
+T-1006,Change account email,How do I change the email address on my account? I'm moving to a new company domain.,Faisal Qureshi,faisal.qureshi@example.com,email,2026-10-17T04:35:00
+T-1007,Where is my delivery?,My package was supposed to arrive yesterday and the tracking hasn't updated in 3 days.,Emily Clark,emily.clark@example.com,email,2026-10-17T02:00:00
+T-1008,Delivery delayed again,"The delivery is delayed again!!! This is unacceptable, I've been waiting two weeks.",Maria Lopez,maria.lopez@example.com,email,2026-10-20T01:58:00
+T-1009,Feature idea: dark mode,Would be great if you could add a dark mode to the mobile app.,Fatima Noor,fatima.noor@example.com,email,2026-10-17T04:59:00
+T-1010,Export to Excel,Suggestion: please add an export to Excel option on the reports page.,Faisal Qureshi,faisal.qureshi@example.com,web_form,2026-10-18T15:32:00
+T-1011,Thanks!,"Just wanted to say thank you, the new update is great and much faster.",Noura Al-Dossari,noura.aldossari@example.com,email,2026-10-17T14:46:00
+T-1012,Slow reports,"Reports have been very slow this week, some take over a minute to load.",Tom Becker,tom.becker@example.com,chat,2026-10-17T18:00:00
+T-1013,Security concern,"I think someone accessed my account from another country. Please check, I'm worried it's been hacked.",Tom Becker,tom.becker@example.com,email,2026-10-17T22:19:00
+T-1014,مشكلة في الفاتورة,السلام عليكم، تم خصم المبلغ مرتين من بطاقتي في فاتورة هذا الشهر. أرجو الاسترداد.,Omar Saleh,omar.saleh@example.com,web_form,2026-10-17T10:01:00
+T-1015,لا أستطيع تسجيل الدخول,نسيت كلمة المرور ولا أستطيع الدخول إلى حسابي.,Maria Lopez,maria.lopez@example.com,email,2026-10-16T14:44:00
+T-1016,Refund request,I'd like to cancel my subscription and get a refund for the unused months.,Priya Raman,priya.raman@example.com,email,2026-10-17T15:42:00
+T-1017,App crashes on Android,The app crashes every time I open the camera scanner on Android 14.,Ahmed Al-Zahrani,ahmed.alzahrani@example.com,email,2026-10-17T08:11:00
+T-1018,Question about plans,What's the difference between the Team and Business plans?,Sara Malik,sara.malik@example.com,web_form,2026-10-19T19:06:00
+T-1019,2FA codes not arriving,I'm not receiving the 2FA SMS codes so I'm locked out. I have a client demo today.,Omar Saleh,omar.saleh@example.com,web_form,2026-10-20T00:59:00
+T-1020,Integration with Zoho,Do you integrate with Zoho Books? We use it for accounting.,Maria Lopez,maria.lopez@example.com,email,2026-10-19T05:47:00
+T-1021,Wrong VAT number on invoice,Our VAT number on the last three invoices is wrong. Please correct and reissue them.,Noura Al-Dossari,noura.aldossari@example.com,chat,2026-10-18T12:00:00
+T-1022,Webhook not firing,The order.created webhook stopped firing after we rotated our API keys yesterday.,Hassan Raza,hassan.raza@example.com,email,2026-10-17T22:00:00
+T-1023,Add user to account,Please add my colleague as an admin user to our company account.,Fatima Noor,fatima.noor@example.com,web_form,2026-10-20T03:00:00
+T-1024,Parcel arrived damaged,"The parcel arrived today and the box was crushed, two items are broken.",John Peters,john.peters@example.com,email,2026-10-18T10:00:00
+T-1025,Bulk upload request,Could you add a bulk upload option for products? Adding them one by one takes hours.,Emily Clark,emily.clark@example.com,email,2026-10-18T09:00:00
+T-1026,Payment failed,My card payment failed three times but the bank says there's no problem.,Hassan Raza,hassan.raza@example.com,email,2026-10-19T02:00:00
+T-1027,Login page error,The login page shows 'Something went wrong' on Safari. Works on Chrome.,Ahmed Al-Zahrani,ahmed.alzahrani@example.com,web_form,2026-10-19T06:00:00
+T-1028,Contract renewal,Our contract renews next month. Can we discuss moving to annual billing?,Khalid Bin Saad,khalid.bin.saad@example.com,chat,2026-10-19T10:00:00
+T-1029,Still no response,This is the third time I'm writing about my refund and nobody has replied. Very frustrated.,Khalid Bin Saad,khalid.bin.saad@example.com,email,2026-10-20T00:00:00
+T-1030,Training session,Do you offer a training session for new staff on the reporting module?,John Peters,john.peters@example.com,web_form,2026-10-18T01:00:00
