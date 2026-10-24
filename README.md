@@ -30,6 +30,7 @@ python -m triage import data/sample_tickets.csv data/reply_example.eml --demo-da
 
 streamlit run app.py                  # review queue at http://localhost:8501
 uvicorn triage.webhook:app --port 8001   # optional: real-time intake
+python chatbot.py                     # optional: FAQ chat demo at http://127.0.0.1:8765
 ```
 
 To use an LLM instead of rules:
@@ -41,13 +42,14 @@ export TRIAGE_ENGINE=anthropic ANTHROPIC_API_KEY=...
 
 ## Tests
 
-`pytest -q` runs 34 tests covering:
+`pytest -q` runs 40 tests covering:
 
 - the keyword rules, including Arabic and word-suffix edge cases (`accountant` ≠ `account`)
 - business-hours SLA maths across evenings and weekends
 - OpenAI and Anthropic response parsing, using mocked HTTP
 - fallback on refusals, schema violations and 429s
 - `.eml` and Zendesk parsing, store idempotency and webhook auth
+- the FAQ chat demo: source matching, ambiguous questions and human handoff
 
 ## Layout
 
@@ -61,6 +63,7 @@ triage/
   store.py      SQLite persistence and review updates
   webhook.py    FastAPI intake
 app.py          Streamlit review queue
+chatbot.py      local FAQ chat demo (chatbot.html)
 data/           fictional sample tickets
 ```
 

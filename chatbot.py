@@ -3,7 +3,13 @@ import json
 import re
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
-from app import offline
+from triage.models import Ticket
+from triage.rules import classify
+
+
+def triage_question(question):
+    t = classify(Ticket(id='chat', body=question))
+    return {'category': t.category, 'priority': t.priority}
 
 FAQ = [
     {'id': 'demo-billing', 'title': 'Sample billing policy', 'keywords': {'invoice','billing','payment','receipt'}, 'answer': 'In this fictional service, invoices are available in Billing > Documents. A human support agent handles payment disputes.'},
@@ -19,7 +25,7 @@ def answer(question):
     score, item = ranked[0]
     ambiguous = score > 0 and score == ranked[1][0]
     found = score > 0 and not ambiguous
-    return {'answer': item['answer'] if found else 'I could not identify one matching FAQ. Please clarify your question or request human review.', 'source': {'id': item['id'], 'title': item['title']} if found else None, 'review_required': not found or item['id'] == 'demo-refund', 'triage': offline(question), 'mode': 'offline keyword retrieval; synthetic policies'}
+    return {'answer': item['answer'] if found else 'I could not identify one matching FAQ. Please clarify your question or request human review.', 'source': {'id': item['id'], 'title': item['title']} if found else None, 'review_required': not found or item['id'] == 'demo-refund', 'triage': triage_question(question), 'mode': 'offline keyword retrieval; synthetic policies'}
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *_):
